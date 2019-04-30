@@ -26,6 +26,20 @@ public:
 
     bool empty() const { return ( !head ||!tail ); }
 
+    int size(){
+        if(empty())
+            return 0;
+
+        node* curr= head;
+        int count= 1;
+
+        while(curr!=tail){
+            curr=curr->next;
+            count++;
+        }
+
+        return count;
+    }
     void insert(const T& o){
         head= new node(o, nullptr, head);
         if(empty()){
