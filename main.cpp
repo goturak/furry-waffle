@@ -4,6 +4,8 @@
 
 int main() {
     List<int> l= List<int>();
+
+
     std::cout << l.size() << std::endl;
     l.insert(1);
     std::cout << l.size() << std::endl;

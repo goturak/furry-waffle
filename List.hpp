@@ -23,6 +23,7 @@ class List {
         node(T t, node* p, node* n) : elem(t), prev(p), next(n) {}
 
     };
+
     node* head;
     node* tail;
 
@@ -135,6 +136,9 @@ public:
     }
 
     Iterator end(){
+        if(empty())
+            return begin();
+
         return Iterator(tail);
     }
 
