@@ -5,6 +5,10 @@
 #ifndef LABO3CPP_LIST_H
 #define LABO3CPP_LIST_H
 
+#include <cstdlib>
+#include <initializer_list>
+#include <iterator>
+
 using namespace std;
 
 
@@ -17,6 +21,7 @@ class List {
         node* prev;
         node* next;
         node(T t, node* p, node* n) : elem(t), prev(p), next(n) {}
+        node(const node& n):
     };
     node* head;
     node* tail;
@@ -24,6 +29,27 @@ class List {
 public:
     List() : head(nullptr ), tail (nullptr ) {}
 
+    List(const List& l):head(nullptr), tail(nullptr){
+        
+    }
+
+    /**
+     * constructeur avec initializer list
+     * @param args initializer list
+     */
+    List(std::initializer_list<T> args)
+            : head(nullptr), tail(nullptr) {
+        int i = 0;
+        for (const T *val = args.begin(); val != args.end(); ++val)
+            append(*val);
+
+    }
+
+
+    /**
+     *
+     * @return if the list is empty or not
+     */
     bool empty() const { return ( !head ||!tail ); }
 
     int size(){
@@ -40,6 +66,11 @@ public:
 
         return count;
     }
+
+    /**
+     * inserts the element o at the begining of the list
+     * @param o the element to insert
+     */
     void insert(const T& o){
         head= new node(o, nullptr, head);
         if(empty()){
