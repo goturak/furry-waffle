@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <initializer_list>
 #include <iterator>
+#include <iostream>
 
 using namespace std;
 
@@ -30,9 +31,9 @@ public:
     List() : head(nullptr ), tail (nullptr ) {}
 
 
-    List(const List& l):head(nullptr), tail(nullptr){
+  //  List(const List& l):head(nullptr), tail(nullptr){
 
-    }
+    //}
 
     /**
      * constructeur avec initializer list
@@ -49,8 +50,23 @@ public:
 
     T operator[](int i) {
         if(i>size()){
-            
+            cout << "Index out of bounds" <<endl;
         }
+    }
+
+    /**
+     * overloads assignement operator (=)
+     * @param t
+     */
+    void operator=(List<T> t){
+        head=t.head;
+        tail=t.tail;
+    }
+
+    ostream& operator<<(ostream& os)
+    {
+       // os << dt.mo << '/' << dt.da << '/' << dt.yr;
+        return os;
     }
 
     /**
