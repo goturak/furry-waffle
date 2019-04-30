@@ -39,46 +39,48 @@ public:
 private:
     class GenericIterator{
     protected:
-        T* value;
+        node* value;
     public:
         T& operator++(){
-            return next;
+            value = value->next;
+            return value->elem;
         }
 
         T& operator--(){
-            return prev;
+            value = value->prev;
+            return value->elem;
         }
 
         T* operator->(){
-            return value;
+            return value->elem;
         }
 
         bool operator==(GenericIterator& it){
-            return *value==*it.value;
+            return *value->elem==*it.value->elem;
         }
 
         bool operator!=(GenericIterator& it){
-            return *value!=*it.value;
+            return *value->elem!=*it.value->elem;
         }
     };
 
 public:
     class Iterator : GenericIterator{
-        Iterator(T* v){
-            GenericIterator::value = v;
+        Iterator(node n){
+            GenericIterator::value = n;
         }
 
         T& operator*(){
-            return *GenericIterator::value;
+            return *GenericIterator::value->elem;
         }
     };
     class ConstIterator : GenericIterator{
-        ConstIterator(T* v){
-            GenericIterator::value = v;
+        ConstIterator(node n){
+            GenericIterator::value = n;
         }
 
         const T& operator*(){
-            const T& v = GenericIterator::value;
+            const T& v = GenericIterator::value->elem;
             return v;
         }
 
