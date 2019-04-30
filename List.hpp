@@ -6,8 +6,7 @@
 #define LABO3CPP_LIST_H
 
 #include <cstdlib>
-#include <initializer_list>
-#include <iterator>
+
 #include <iostream>
 
 using namespace std;
@@ -59,23 +58,27 @@ private:
             return *value->elem==*it.value->elem;
         }
 
-        bool operator!=(GenericIterator& it){
-            return *value->elem!=*it.value->elem;
+        bool operator!=(GenericIterator it){
+            return value->elem!=it.value->elem;
         }
     };
 
 public:
-    class Iterator : GenericIterator{
-        Iterator(node n){
+    class Iterator : public GenericIterator{
+    public:
+        Iterator(node* n){
             GenericIterator::value = n;
         }
 
+
         T& operator*(){
-            return *GenericIterator::value->elem;
+            return GenericIterator::value->elem;
         }
     };
-    class ConstIterator : GenericIterator{
-        ConstIterator(node n){
+
+    class ConstIterator :public  GenericIterator{
+    public:
+        ConstIterator(node* n){
             GenericIterator::value = n;
         }
 
@@ -126,6 +129,19 @@ public:
      */
     bool empty() const { return ( !head ||!tail ); }
 
+
+    Iterator begin(){
+        return Iterator(head);
+    }
+
+    Iterator end(){
+        return Iterator(tail);
+    }
+
+    /**
+     * returns the size of the list
+     * @return the size of the list
+     */
     int size(){
         if(empty())
             return 0;
