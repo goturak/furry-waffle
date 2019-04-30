@@ -6,6 +6,7 @@ tags*
 .idea
 target
 
+
 # Python
 env/
 __pycache__/
@@ -54,4 +55,8 @@ Makefile
 
 # Others
 *.gdb*
+
+
+cmake-build-debug/
+CMakeLists.txt
 
