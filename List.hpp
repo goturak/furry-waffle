@@ -35,7 +35,7 @@ public:
     }
 private:
     class GenericIterator{
-    private:
+    protected:
         T* value;
     public:
         T& operator++(){
@@ -46,12 +46,8 @@ private:
             return prev;
         }
 
-        T* operator*(){
-            return *value;
-        }
-
         T* operator->(){
-            return *value;
+            return value;
         }
 
         bool operator==(GenericIterator& it){
@@ -65,9 +61,23 @@ private:
 
 public:
     class Iterator : GenericIterator{
-        
+        Iterator(T* v){
+            GenericIterator::value = v;
+        }
+
+        T& operator*(){
+            return *GenericIterator::value;
+        }
     };
-    class ConstIterator : public GenericIterator{
+    class ConstIterator : GenericIterator{
+        ConstIterator(T* v){
+            GenericIterator::value = v;
+        }
+
+        const T& operator*(){
+            const T& v = GenericIterator::value;
+            return v;
+        }
 
     };
 
