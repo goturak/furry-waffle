@@ -21,13 +21,14 @@ class List {
         node* prev;
         node* next;
         node(T t, node* p, node* n) : elem(t), prev(p), next(n) {}
-        node(const node& n):
+
     };
     node* head;
     node* tail;
 
 public:
     List() : head(nullptr ), tail (nullptr ) {}
+
 
     List(const List& l):head(nullptr), tail(nullptr){
 
@@ -45,6 +46,12 @@ public:
 
     }
 
+
+    T operator[](int i) {
+        if(i>size()){
+            
+        }
+    }
 
     /**
      *
