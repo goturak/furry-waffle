@@ -11,6 +11,9 @@ int main() {
     std::cout << l->size() << std::endl;
     l->append(5);
     List<int> l2 ={4,3,2,1};
+    for (List<string>::Iterator it = l->begin(); it != l.end(); ++it)
+        cout << *it << " ";
+    cout << endl;
     std::cout << "Hello, World!" << std::endl;
     return 0;
 }
