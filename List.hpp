@@ -33,7 +33,56 @@ public:
 
   //  List(const List& l):head(nullptr), tail(nullptr){
 
+
     //}
+
+private:
+    class GenericIterator{
+    protected:
+        T* value;
+    public:
+        T& operator++(){
+            return next;
+        }
+
+        T& operator--(){
+            return prev;
+        }
+
+        T* operator->(){
+            return value;
+        }
+
+        bool operator==(GenericIterator& it){
+            return *value==*it.value;
+        }
+
+        bool operator!=(GenericIterator& it){
+            return *value!=*it.value;
+        }
+    };
+
+public:
+    class Iterator : GenericIterator{
+        Iterator(T* v){
+            GenericIterator::value = v;
+        }
+
+        T& operator*(){
+            return *GenericIterator::value;
+        }
+    };
+    class ConstIterator : GenericIterator{
+        ConstIterator(T* v){
+            GenericIterator::value = v;
+        }
+
+        const T& operator*(){
+            const T& v = GenericIterator::value;
+            return v;
+        }
+
+    };
 
     /**
      * constructeur avec initializer list
@@ -119,7 +168,5 @@ public:
     }
 
 };
-
-
 
 #endif //LABO3CPP_LIST_H
