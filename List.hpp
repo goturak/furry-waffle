@@ -30,7 +30,7 @@ public:
     List() : head(nullptr ), tail (nullptr ) {}
 
     List(const List& l):head(nullptr), tail(nullptr){
-        
+
     }
 
     /**
