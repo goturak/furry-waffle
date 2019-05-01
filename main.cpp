@@ -48,6 +48,7 @@ int main() {
     l4=l3;
    // l3= List<int>();
 
+  l3.remove(0);
 
     std::cout << l3.size() << std::endl;
 
@@ -56,5 +57,8 @@ int main() {
     for (List<int>::Iterator it = l3.begin(); it != l3.end(); ++it)
         cout << *it << " ";
 
+  cout << endl;
+
+  cout<< l3[2];
     return 0;
 }

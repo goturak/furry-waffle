@@ -203,9 +203,17 @@ public:
 
 
     T operator[](int i) {
-        if(i>size()){
-            cout << "Index out of bounds" <<endl;
+        if(i>=size()){
+            throw "Index out of bounds" ;
         }
+
+        List<T>::Iterator val = begin();
+
+        for(int j = 0; j<i;j++){
+            ++val;
+        }
+        return *val;
+
     }
 
     /**
@@ -230,6 +238,55 @@ public:
     bool empty() const { return ( !head ); }
 
 
+    void removeAt(size_t index){
+        if(index>=size()){
+            throw "Index out of bounds" ;
+        }
+      node* curr=head;
+
+        for(int j = 0; j<index;j++){
+           curr=curr->next;
+        }
+
+        curr->next->prev=curr->prev;
+
+        if(index==0){
+            head=curr->next;
+        }else{
+            curr->prev->next=curr->next;
+        }
+
+
+        delete curr;
+
+    }
+
+    void remove(const T& o){
+
+        node* curr=head;
+
+        while((curr->elem!=o&&curr!=tail)){
+            curr=curr->next;
+        }
+        if(curr!=tail){
+            if(curr==head){
+                if(head->next!=tail){
+                    head=head->next;
+                }else{
+                    head= nullptr;
+                }
+            }else{
+                curr->prev->next=curr->next;
+            }
+
+            delete curr;
+
+        }
+
+
+
+
+    }
     ConstIterator begin()const{
         return ConstIterator(head);
     }
