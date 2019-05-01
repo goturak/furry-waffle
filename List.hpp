@@ -12,9 +12,12 @@
 using namespace std;
 
 
-
 template <typename T>
 class List {
+
+
+
+
     struct node
     {
         T elem;
@@ -24,17 +27,11 @@ class List {
 
     };
 
+    node nullNode= node(0, nullptr, nullptr);
     node* head;
     node* tail;
 
-public:
-    List() : head(nullptr ), tail (nullptr ) {}
 
-
-  //  List(const List& l):head(nullptr), tail(nullptr){
-
-
-    //}
 
 private:
     class GenericIterator{
@@ -90,12 +87,27 @@ public:
 
     };
 
+
+
+
+
+
+public:
+    List() : head(nullptr ), tail (&nullNode ) {}
+
+
+  //  List(const List& l):head(nullptr), tail(nullptr){
+
+
+    //}
+
+
     /**
      * constructeur avec initializer list
      * @param args initializer list
      */
     List(std::initializer_list<T> args)
-            : head(nullptr), tail(nullptr) {
+            : head(nullptr), tail(&nullNode) {
         int i = 0;
         for (const T *val = args.begin(); val != args.end(); ++val)
             append(*val);
@@ -128,7 +140,7 @@ public:
      *
      * @return if the list is empty or not
      */
-    bool empty() const { return ( !head ||!tail ); }
+    bool empty() const { return ( !head ); }
 
 
     Iterator begin(){
@@ -151,7 +163,7 @@ public:
             return 0;
 
         node* curr= head;
-        int count= 1;
+        int count= 0;
 
         while(curr!=tail){
             curr=curr->next;
@@ -166,9 +178,11 @@ public:
      * @param o the element to insert
      */
     void insert(const T& o){
-        head= new node(o, nullptr, head);
+
         if(empty()){
-            tail=head;
+            head= new node(o, nullptr, tail);
+        }else{
+            head= new node(o, nullptr, head);
         }
 
         if(head->next!= nullptr){
@@ -178,16 +192,21 @@ public:
     }
 
     void append(const T& o){
-        tail= new node(o, tail, nullptr);
+
         if(empty()){
-            head=tail;
+            head= new node(o, nullptr, tail);
+
+            tail->prev=head;
+        }else{
+            tail->prev=new node(o, tail->prev, tail);
+            tail->prev->prev->next=tail->prev;
         }
 
-        if(tail->prev!= nullptr){
-            tail->prev->next=tail;
-        }
+
 
     }
+
+
 
 };
 

@@ -7,9 +7,9 @@ int main() {
 
 
     std::cout << l.size() << std::endl;
-    l.insert(1);
+    l.append(1);
     std::cout << l.size() << std::endl;
-    l.insert(2);
+    l.append(2);
     std::cout << l.size() << std::endl;
     l.append(5);
 
