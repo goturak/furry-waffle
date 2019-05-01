@@ -27,61 +27,148 @@ class List {
 
     };
 
-    node nullNode= node(0, nullptr, nullptr);
+    node nullNode= node( T() , nullptr, nullptr);
     node* head;
     node* tail;
 
 
 
 private:
+    /**
+     * Generic private class representing an iterator, that will have two children.
+     */
     class GenericIterator{
     protected:
+        /**
+         * The value on which the iterator currently is.
+         */
         node* value;
     public:
-        T& operator++(){
-            value = value->next;
-            return value->elem;
-        }
 
-        T& operator--(){
-            value = value->prev;
-            return value->elem;
-        }
-
-        T* operator->(){
-            return value->elem;
-        }
-
-        bool operator==(GenericIterator& it){
+        /**
+         * Overload of the == operator
+         * @param it The other iterator
+         * @return true if both iterator are on the same element, false otherwise.
+         */
+        bool operator==(GenericIterator it){
             return *value->elem==*it.value->elem;
         }
 
+
+        /**
+         * Overload of the != operator
+         * @param it The other iterator
+         * @return flase if both iterator are on the same element, true otherwise.
+         */
         bool operator!=(GenericIterator it){
-            return value->elem!=it.value->elem;
+            return value!=it.value;
         }
     };
 
 public:
-    class Iterator : public GenericIterator{
+
+    /**
+     * Iternal class representing an Iterator, inheritated from Generic Iterator
+     */
+    class Iterator :public GenericIterator{
     public:
+        /**
+         * Constructor of an Iterator
+         * @param n the current node on which the iterator is.
+         */
+
         Iterator(node* n){
             GenericIterator::value = n;
         }
 
 
-        T& operator*(){
+        /**
+         * Overload of the ++ operator.
+         * @return the next value of the list.
+         */
+        T& operator++(){
+            GenericIterator::value = GenericIterator::value->next;
+            return GenericIterator::value->elem;
+        }
+
+        /**
+         * Overload of the -- operator.
+         * @return the previous value of the list.
+         */
+        T& operator--(){
+            GenericIterator::value = GenericIterator::value->prev;
+            return GenericIterator::value->elem;
+        }
+
+        /**
+         * Overload of the -> operator.
+         * @return the pointer on the value of the list.
+         */
+        T& operator->(){
+            return GenericIterator::value->elem;
+
+        }
+
+        /**
+         * Overload of the * operator.
+         * @return the value of the list.
+         */
+        T operator*(){
             return GenericIterator::value->elem;
         }
     };
 
-    class ConstIterator :public  GenericIterator{
+
+    /**
+     * Internal class representing a const Iterator,
+     * inheritated from Generic Iterator
+     */
+    class ConstIterator : public GenericIterator{
     public:
-        ConstIterator(node* n){
+        /**
+         * Constructor of const iterator
+         * @param n the current node
+         */
+
+         ConstIterator(node* n) {
             GenericIterator::value = n;
         }
 
-        const T& operator*(){
+        /**
+         * Overload of the ++ operator.
+         * @return the next value of the list (const).
+         */
+        const T& operator++(){
+            GenericIterator::value = GenericIterator::value->next;
             const T& v = GenericIterator::value->elem;
+            return v;
+        }
+
+        /**
+         * Overload of the -- operator.
+         * @return the previous value of the list (const).
+         */
+        const T& operator--(){
+            GenericIterator::value = GenericIterator::value->prev;
+            const T& v =GenericIterator::value->elem;
+            return v;
+        }
+
+        /**
+         * Overload of the -> operator.
+         * @return the pointer on the value of the list (const).
+         */
+        const T& operator->()const{
+            const T& v = GenericIterator::value->elem;
+            return v;
+        }
+
+        /**
+         * Overload of the * operator.
+         * @return the value of the list (const).
+         */
+        const T operator*()const{
+            const T v =GenericIterator::value->elem;
             return v;
         }
 
@@ -132,7 +219,7 @@ public:
 
     ostream& operator<<(ostream& os)
     {
-       // os << dt.mo << '/' << dt.da << '/' << dt.yr;
+
         return os;
     }
 
@@ -143,17 +230,28 @@ public:
     bool empty() const { return ( !head ); }
 
 
+    ConstIterator begin()const{
+        return ConstIterator(head);
+    }
+
     Iterator begin(){
         return Iterator(head);
     }
 
-    Iterator end(){
+
+    ConstIterator end()const {
+        if(empty())
+            return begin();
+
+        return ConstIterator(tail);
+    }
+
+    Iterator end() {
         if(empty())
             return begin();
 
         return Iterator(tail);
     }
-
     /**
      * returns the size of the list
      * @return the size of the list
