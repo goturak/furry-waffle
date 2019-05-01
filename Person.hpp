@@ -18,6 +18,9 @@ private:
 
 public:
 
+    Person(){
+
+    }
     /**
      * Constructor of a person
      * @param n the name of the person

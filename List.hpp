@@ -6,16 +6,18 @@
 #define LABO3CPP_LIST_H
 
 #include <cstdlib>
-#include <initializer_list>
-#include <iterator>
+
 #include <iostream>
 
 using namespace std;
 
 
-
 template <typename T>
 class List {
+
+
+
+
     struct node
     {
         T elem;
@@ -24,17 +26,12 @@ class List {
         node(T t, node* p, node* n) : elem(t), prev(p), next(n) {}
 
     };
+
+    node nullNode= node( T() , nullptr, nullptr);
     node* head;
     node* tail;
 
-public:
-    List() : head(nullptr ), tail (nullptr ) {}
 
-
-  //  List(const List& l):head(nullptr), tail(nullptr){
-
-
-    //}
 
 private:
     /**
@@ -57,13 +54,14 @@ private:
             return *value->elem==*it.value->elem;
         }
 
+
         /**
          * Overload of the != operator
          * @param it The other iterator
          * @return flase if both iterator are on the same element, true otherwise.
          */
         bool operator!=(GenericIterator it){
-            return *value->elem!=*it.value->elem;
+            return value!=it.value;
         }
     };
 
@@ -72,15 +70,17 @@ public:
     /**
      * Iternal class representing an Iterator, inheritated from Generic Iterator
      */
-    class Iterator : GenericIterator{
+    class Iterator :public GenericIterator{
     public:
         /**
          * Constructor of an Iterator
          * @param n the current node on which the iterator is.
          */
+
         Iterator(node* n){
             GenericIterator::value = n;
         }
+
 
         /**
          * Overload of the ++ operator.
@@ -105,29 +105,32 @@ public:
          * @return the pointer on the value of the list.
          */
         T& operator->(){
-            return *GenericIterator::value->elem;
+            return GenericIterator::value->elem;
+
         }
 
         /**
          * Overload of the * operator.
          * @return the value of the list.
          */
-        T* operator*(){
+        T operator*(){
             return GenericIterator::value->elem;
         }
     };
+
 
     /**
      * Internal class representing a const Iterator,
      * inheritated from Generic Iterator
      */
-    class ConstIterator : GenericIterator{
+    class ConstIterator : public GenericIterator{
     public:
         /**
          * Constructor of const iterator
          * @param n the current node
          */
-        ConstIterator(node* n){
+
+         ConstIterator(node* n) {
             GenericIterator::value = n;
         }
 
@@ -155,8 +158,8 @@ public:
          * Overload of the -> operator.
          * @return the pointer on the value of the list (const).
          */
-        const T& operator->(){
-            const T& v = *GenericIterator::value->elem;
+        const T& operator->()const{
+            const T& v = GenericIterator::value->elem;
             return v;
         }
 
@@ -164,19 +167,34 @@ public:
          * Overload of the * operator.
          * @return the value of the list (const).
          */
-        const T* operator*(){
-            const T* v = GenericIterator::value->elem;
+        const T operator*()const{
+            const T v =GenericIterator::value->elem;
             return v;
         }
 
     };
+
+
+
+
+
+
+public:
+    List() : head(nullptr ), tail (&nullNode ) {}
+
+
+  //  List(const List& l):head(nullptr), tail(nullptr){
+
+
+    //}
+
 
     /**
      * constructeur avec initializer list
      * @param args initializer list
      */
     List(std::initializer_list<T> args)
-            : head(nullptr), tail(nullptr) {
+            : head(nullptr), tail(&nullNode) {
         int i = 0;
         for (const T *val = args.begin(); val != args.end(); ++val)
             append(*val);
@@ -201,7 +219,7 @@ public:
 
     ostream& operator<<(ostream& os)
     {
-       // os << dt.mo << '/' << dt.da << '/' << dt.yr;
+
         return os;
     }
 
@@ -209,14 +227,41 @@ public:
      *
      * @return if the list is empty or not
      */
-    bool empty() const { return ( !head ||!tail ); }
+    bool empty() const { return ( !head ); }
 
+
+    ConstIterator begin()const{
+        return ConstIterator(head);
+    }
+
+    Iterator begin(){
+        return Iterator(head);
+    }
+
+
+    ConstIterator end()const {
+        if(empty())
+            return begin();
+
+        return ConstIterator(tail);
+    }
+
+    Iterator end() {
+        if(empty())
+            return begin();
+
+        return Iterator(tail);
+    }
+    /**
+     * returns the size of the list
+     * @return the size of the list
+     */
     int size(){
         if(empty())
             return 0;
 
         node* curr= head;
-        int count= 1;
+        int count= 0;
 
         while(curr!=tail){
             curr=curr->next;
@@ -231,9 +276,11 @@ public:
      * @param o the element to insert
      */
     void insert(const T& o){
-        head= new node(o, nullptr, head);
+
         if(empty()){
-            tail=head;
+            head= new node(o, nullptr, tail);
+        }else{
+            head= new node(o, nullptr, head);
         }
 
         if(head->next!= nullptr){
@@ -243,16 +290,21 @@ public:
     }
 
     void append(const T& o){
-        tail= new node(o, tail, nullptr);
+
         if(empty()){
-            head=tail;
+            head= new node(o, nullptr, tail);
+
+            tail->prev=head;
+        }else{
+            tail->prev=new node(o, tail->prev, tail);
+            tail->prev->prev->next=tail->prev;
         }
 
-        if(tail->prev!= nullptr){
-            tail->prev->next=tail;
-        }
+
 
     }
+
+
 
 };
 
