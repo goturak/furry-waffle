@@ -104,16 +104,16 @@ public:
          * Overload of the -> operator.
          * @return the pointer on the value of the list.
          */
-        T* operator->(){
-            return GenericIterator::value->elem;
+        T& operator->(){
+            return *GenericIterator::value->elem;
         }
 
         /**
          * Overload of the * operator.
          * @return the value of the list.
          */
-        T& operator*(){
-            return *GenericIterator::value->elem;
+        T* operator*(){
+            return GenericIterator::value->elem;
         }
     };
 
@@ -155,8 +155,8 @@ public:
          * Overload of the -> operator.
          * @return the pointer on the value of the list (const).
          */
-        const T* operator->(){
-            const T* v = GenericIterator::value->elem;
+        const T& operator->(){
+            const T& v = *GenericIterator::value->elem;
             return v;
         }
 
@@ -164,8 +164,8 @@ public:
          * Overload of the * operator.
          * @return the value of the list (const).
          */
-        const T& operator*(){
-            const T& v = GenericIterator::value->elem;
+        const T* operator*(){
+            const T* v = GenericIterator::value->elem;
             return v;
         }
 
