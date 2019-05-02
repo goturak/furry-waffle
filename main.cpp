@@ -15,11 +15,16 @@ int main() {
   for (List<string>::Iterator it = l.begin(); it != l.end(); ++it)
        cout << *it << " ";
     cout << endl;
+    cout << l.find("trois");
+    cout << endl;
+    cout << l.find("quatre");
+    cout << endl;
     
   const List<int> c = { 42, 3, 14 };
   for (List<int>::ConstIterator it = c.begin(); it != c.end(); ++it)
        cout << *it << " ";
     cout << endl;
+    cout << l << endl;
 
     /*
      * Now we want to test with the custom Person class created alongside this
