@@ -33,13 +33,13 @@ public:
      * Method to string
      * @return the name of the person
      */
-    string toString(){
+    string toString()const{
         return name;
     }
 
-    ostream& operator<<(ostream& os)
+    friend ostream& operator<<(ostream& os,const  Person &p)
     {
-        return os << name;
+        return os << p.toString();
     }
 };
 #endif //FURRY_WAFFLE_PERSON_HPP

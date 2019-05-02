@@ -228,17 +228,19 @@ public:
         tail=t.tail;
     }
 
+
+
     friend ostream& operator<<(ostream& os, const List<T> &list)
     {
-        os << "[ ";
-        for (List<T>::ConstIterator it = list.begin(); it != list.end(); ++it) {
-            os << *it;
-            if(it != list.end()){
-                os << " ";
+        os << "[";
+        for (int i =0; i< list.size();i++) {
+            os << list[i];
+            if(i != list.size()-1){
+                os << ",";
             }
         }
         os << "]" << endl;
-            return os;
+        return os;
     }
 
     /**
@@ -256,10 +258,10 @@ public:
         if(index>=size()){
             throw "Index out of bounds" ;
         }
-      node* curr=head;
+        node* curr=head;
 
         for(int j = 0; j<index;j++){
-           curr=curr->next;
+            curr=curr->next;
         }
 
         curr->next->prev=curr->prev;
@@ -305,25 +307,26 @@ public:
     }
 
     /**
-          * returns an ConstIterator pointing on the head of the list
-          * @return  ConstIterator pointing on the head
-          */
+    * returns an ConstIterator pointing on the head of the list
+    * @return  ConstIterator pointing on the head
+    */
     ConstIterator begin()const{
         return ConstIterator(head);
     }
+
     /**
-       * returns an Iterator pointing on the head of the list
-       * @return  Iterator pointing on the head  
-       */
+    * returns an Iterator pointing on the head of the list
+    * @return  Iterator pointing on the head
+    */
     Iterator begin(){
         return Iterator(head);
     }
 
 
     /**
-   * return an ConstIterator pointing on the tail of the list
-   * @return  ConstIterator pointing on the tail  
-   */
+    * return an ConstIterator pointing on the tail of the list
+    * @return  ConstIterator pointing on the tail
+    */
     ConstIterator end()const {
         if(empty())
             return begin();
@@ -341,9 +344,9 @@ public:
 
         return Iterator(tail);
     }
-    
-    
-    
+
+
+
     /**
      * returns the size of the list
      * @return the size of the list
