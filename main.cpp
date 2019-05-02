@@ -38,7 +38,29 @@ int main() {
     listIntCopy.remove(3);
     cout<<"listIntCopy after remove(3) = "<<listIntCopy<<endl;
 
-    cout<<"listIntCopy[1] = "<<listIntCopy[1]<<endl;
+
+    //testing []
+    cout<<"listIntCopy[1] = "<<listIntCopy[1]<<endl<<endl;
+
+    //testing find()
+
+    cout<<"result of listIntCopy.find(4) = "<< listIntCopy.find(4)<<endl;
+    cout<<"result of listIntCopy.find(42) = "<< listIntCopy.find(42)<<endl<<endl;
+
+
+    //testing Iterator and constructor with initialiser list
+
+    cout<<"building initList = {45,34,1,5,63,1223,234,34} and printing it via Iterator"<<endl;
+     List<int> initList= {45,34,1,5,63,1223,234,34};
+    for (List<int>::Iterator it = initList.begin(); it != initList.end(); ++it)
+        cout << *it << " ";
+
+    cout<<endl<<endl;
+
+
+    //testing =
+    listInt=initList;
+    cout<<"listInt after \"listInt=initList\" ="<<listInt;
 
   /*
    * First we test with the given output wanted.

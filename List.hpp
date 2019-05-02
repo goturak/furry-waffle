@@ -31,6 +31,7 @@ class List {
     node* tail;
 
 
+    size_t length;
 
 private:
     /**
@@ -176,10 +177,10 @@ public:
 
 
 public:
-    List() : head(nullptr ), tail (&nullNodeTail ) {}
+    List() : head(nullptr ), tail (&nullNodeTail ),length(0) {}
 
 
-    List(const List& l):head(nullptr), tail(&nullNodeTail){
+    List(const List& l):head(nullptr), tail(&nullNodeTail),length(0){
         for (List<T>::ConstIterator it = l.begin(); it != l.end(); ++it)
             append(*it);
 
@@ -189,11 +190,11 @@ public:
 
 
     /**
-     * constructeur avec initializer list
+     * constructor with initializer list
      * @param args initializer list
      */
     List(std::initializer_list<T> args)
-            : head(nullptr), tail(&nullNodeTail) {
+            : head(nullptr), tail(&nullNodeTail),length(0) {
         int i = 0;
         for (const T *val = args.begin(); val != args.end(); ++val)
             append(*val);
@@ -272,7 +273,7 @@ public:
             curr->prev->next=curr->next;
         }
 
-
+        length--;
         delete curr;
 
     }
@@ -299,7 +300,7 @@ public:
             }else{
                 curr->prev->next=curr->next;
             }
-
+            length--;
             delete curr;
 
         }
@@ -351,19 +352,9 @@ public:
      * returns the size of the list
      * @return the size of the list
      */
-    int size()const{
-        if(empty())
-            return 0;
+    size_t size()const{
 
-        node* curr= head;
-        int count= 0;
-
-        while(curr!=tail){
-            curr=curr->next;
-            count++;
-        }
-
-        return count;
+        return length;
     }
 
     /**
@@ -382,6 +373,7 @@ public:
             head->next->prev=head;
         }
 
+        length++;
     }
 
     /**
@@ -399,6 +391,8 @@ public:
             tail->prev=new node(o, tail->prev, tail);
             tail->prev->prev->next=tail->prev;
         }
+
+        length++;
     }
 
     /**
