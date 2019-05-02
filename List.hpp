@@ -27,7 +27,7 @@ class List {
 
     };
 
-    node nullNode= node( T() , nullptr, nullptr);
+    node nullNodeTail= node( T() , nullptr, nullptr);
     node* head;
     node* tail;
 
@@ -51,7 +51,7 @@ private:
          * @return true if both iterator are on the same element, false otherwise.
          */
         bool operator==(GenericIterator it){
-            return *value->elem==*it.value->elem;
+            return value==it.value;
         }
 
 
@@ -180,7 +180,7 @@ public:
 
 
 public:
-    List() : head(nullptr ), tail (&nullNode ) {}
+    List() : head(nullptr ), tail (&nullNodeTail ) {}
 
 
   //  List(const List& l):head(nullptr), tail(nullptr){
@@ -194,20 +194,24 @@ public:
      * @param args initializer list
      */
     List(std::initializer_list<T> args)
-            : head(nullptr), tail(&nullNode) {
+            : head(nullptr), tail(&nullNodeTail) {
         int i = 0;
         for (const T *val = args.begin(); val != args.end(); ++val)
             append(*val);
 
     }
 
-
-    T operator[](int i) {
-        if(i>=size()){
+    /**
+     * returns the element at index or throws an exception if the index is out of bounds
+     * @param i index
+     * @return
+     */
+    T operator[](int i) const{
+        if(i>=size()||i<0){
             throw "Index out of bounds" ;
         }
 
-        List<T>::Iterator val = begin();
+        List<T>::ConstIterator val = begin();
 
         for(int j = 0; j<i;j++){
             ++val;
@@ -238,6 +242,10 @@ public:
     bool empty() const { return ( !head ); }
 
 
+    /**
+     * removes the element at index or throws an exception if the index is out of bounds
+     * @param index
+     */
     void removeAt(size_t index){
         if(index>=size()){
             throw "Index out of bounds" ;
@@ -261,6 +269,11 @@ public:
 
     }
 
+    /**
+     * removes the first element that matches o if it exists
+     * @param o
+     *
+     */
     void remove(const T& o){
 
         node* curr=head;
@@ -287,15 +300,24 @@ public:
 
 
     }
+
+
     ConstIterator begin()const{
         return ConstIterator(head);
     }
-
+    /**
+       * return an Iterator pointing on the head of the list
+       * @return  Iterator pointing on the head  
+       */
     Iterator begin(){
         return Iterator(head);
     }
 
 
+    /**
+   * return an ConstIterator pointing on the tail of the list
+   * @return  ConstIterator pointing on the tail  
+   */
     ConstIterator end()const {
         if(empty())
             return begin();
@@ -303,17 +325,24 @@ public:
         return ConstIterator(tail);
     }
 
+    /**
+     * return an Iterator pointing on the tail of the list
+     * @return  Iterator pointing on the tail  
+     */
     Iterator end() {
         if(empty())
             return begin();
 
         return Iterator(tail);
     }
+    
+    
+    
     /**
      * returns the size of the list
      * @return the size of the list
      */
-    int size(){
+    int size()const{
         if(empty())
             return 0;
 
@@ -346,6 +375,10 @@ public:
 
     }
 
+    /**
+     * appends the element o at the end of the list
+     * @param o the element to append
+     */
     void append(const T& o){
 
         if(empty()){
