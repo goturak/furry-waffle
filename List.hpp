@@ -15,9 +15,6 @@ using namespace std;
 template <typename T>
 class List {
 
-
-
-
     struct node
     {
         T elem;
@@ -27,7 +24,9 @@ class List {
 
     };
 
+
     node nullNodeTail= node( T() , nullptr, nullptr);
+
     node* head;
     node* tail;
 
@@ -51,7 +50,7 @@ private:
          * @return true if both iterator are on the same element, false otherwise.
          */
         bool operator==(GenericIterator it){
-            return value==it.value;
+            return value == it.value;
         }
 
 
@@ -61,7 +60,7 @@ private:
          * @return flase if both iterator are on the same element, true otherwise.
          */
         bool operator!=(GenericIterator it){
-            return value!=it.value;
+            return value != it.value;
         }
     };
 
@@ -76,11 +75,9 @@ public:
          * Constructor of an Iterator
          * @param n the current node on which the iterator is.
          */
-
         Iterator(node* n){
             GenericIterator::value = n;
         }
-
 
         /**
          * Overload of the ++ operator.
@@ -106,7 +103,6 @@ public:
          */
         T& operator->(){
             return GenericIterator::value->elem;
-
         }
 
         /**
@@ -130,7 +126,7 @@ public:
          * @param n the current node
          */
 
-         ConstIterator(node* n) {
+        ConstIterator(node* n) {
             GenericIterator::value = n;
         }
 
@@ -158,7 +154,7 @@ public:
          * Overload of the -> operator.
          * @return the pointer on the value of the list (const).
          */
-        const T& operator->()const{
+        const T& operator->() const{
             const T& v = GenericIterator::value->elem;
             return v;
         }
@@ -167,8 +163,8 @@ public:
          * Overload of the * operator.
          * @return the value of the list (const).
          */
-        const T operator*()const{
-            const T v =GenericIterator::value->elem;
+        const T operator*() const{
+            const T v = GenericIterator::value->elem;
             return v;
         }
 
@@ -189,6 +185,7 @@ public:
 
 
     }
+
 
 
     /**
@@ -231,10 +228,17 @@ public:
         tail=t.tail;
     }
 
-    ostream& operator<<(ostream& os)
+    friend ostream& operator<<(ostream& os, const List<T> &list)
     {
-
-        return os;
+        os << "[ ";
+        for (List<T>::ConstIterator it = list.begin(); it != list.end(); ++it) {
+            os << *it;
+            if(it != list.end()){
+                os << " ";
+            }
+        }
+        os << "]" << endl;
+            return os;
     }
 
     /**
@@ -360,8 +364,8 @@ public:
     }
 
     /**
-     * inserts the element o at the begining of the list
-     * @param o the element to insert
+     * Method used to add an element at the start of the list
+     * @param o the object that we want to add
      */
     void insert(const T& o){
 
@@ -378,11 +382,12 @@ public:
     }
 
     /**
-     * appends the element o at the end of the list
-     * @param o the element to append
+
+     * Method used to add an element at the end of the list
+     * @param o the object that we want to add
+
      */
     void append(const T& o){
-
         if(empty()){
             head= new node(o, nullptr, tail);
 
@@ -391,10 +396,25 @@ public:
             tail->prev=new node(o, tail->prev, tail);
             tail->prev->prev->next=tail->prev;
         }
-
-
-
     }
+
+    /**
+     * Method used to find an object in the list and return the
+     * index of the first element we find.
+     * @param o the object we want to find
+     * @return the index of the first element corresponding, -1 otherwise.
+     */
+    int find(const T& o){
+        int count = 0;
+        for (List<T>::Iterator it = this->begin(); it != this->end(); ++it){
+            if(o == *it){
+                return count;
+            }
+            count++;
+        }
+        return -1;
+    }
+
 
 
 
