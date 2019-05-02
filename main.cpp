@@ -44,8 +44,8 @@ int main() {
     l3.append(0);
 
   l3.append(4);
-    List<int> l4= List<int>();
-    l4=l3;
+    List<int> l4= List<int>(l3);
+
    // l3= List<int>();
 
   l3.remove(0);

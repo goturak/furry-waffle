@@ -183,10 +183,12 @@ public:
     List() : head(nullptr ), tail (&nullNodeTail ) {}
 
 
-  //  List(const List& l):head(nullptr), tail(nullptr){
+    List(const List& l):head(nullptr), tail(&nullNodeTail){
+        for (List<T>::ConstIterator it = l.begin(); it != l.end(); ++it)
+            append(*it);
 
 
-    //}
+    }
 
 
     /**
@@ -296,17 +298,17 @@ public:
 
         }
 
-
-
-
     }
 
-
+    /**
+          * returns an ConstIterator pointing on the head of the list
+          * @return  ConstIterator pointing on the head
+          */
     ConstIterator begin()const{
         return ConstIterator(head);
     }
     /**
-       * return an Iterator pointing on the head of the list
+       * returns an Iterator pointing on the head of the list
        * @return  Iterator pointing on the head  
        */
     Iterator begin(){
