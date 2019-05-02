@@ -24,11 +24,14 @@ class List {
 
     };
 
-    node nullNode = node( T() , nullptr, nullptr);
+
+    node nullNodeTail= node( T() , nullptr, nullptr);
+
     node* head;
     node* tail;
 
 
+    size_t length;
 
 private:
     /**
@@ -174,25 +177,47 @@ public:
 
 
 public:
-    List() : head(nullptr ), tail (&nullNode ) {}
+    List() : head(nullptr ), tail (&nullNodeTail ),length(0) {}
+
+
+    List(const List& l):head(nullptr), tail(&nullNodeTail),length(0){
+        for (List<T>::ConstIterator it = l.begin(); it != l.end(); ++it)
+            append(*it);
+
+
+    }
+
+
 
     /**
-     * constructeur avec initializer list
+     * constructor with initializer list
      * @param args initializer list
      */
     List(std::initializer_list<T> args)
-            : head(nullptr), tail(&nullNode) {
+            : head(nullptr), tail(&nullNodeTail),length(0) {
         int i = 0;
         for (const T *val = args.begin(); val != args.end(); ++val)
             append(*val);
 
     }
 
-
-    T operator[](int i) {
-        if(i>size()){
-            cout << "Index out of bounds" <<endl;
+    /**
+     * returns the element at index or throws an exception if the index is out of bounds
+     * @param i index
+     * @return
+     */
+    T operator[](int i) const{
+        if(i>=size()||i<0){
+            throw "Index out of bounds" ;
         }
+
+        List<T>::ConstIterator val = begin();
+
+        for(int j = 0; j<i;j++){
+            ++val;
+        }
+        return *val;
+
     }
 
     /**
@@ -204,17 +229,19 @@ public:
         tail=t.tail;
     }
 
+
+
     friend ostream& operator<<(ostream& os, const List<T> &list)
     {
-        os << "[ ";
-        for (List<T>::ConstIterator it = list.begin(); it != list.end(); ++it) {
-            os << *it;
-            if(it != list.end()){
-                os << " ";
+        os << "[";
+        for (int i =0; i< list.size();i++) {
+            os << list[i];
+            if(i != list.size()-1){
+                os << ",";
             }
         }
         os << "]" << endl;
-            return os;
+        return os;
     }
 
     /**
@@ -224,15 +251,83 @@ public:
     bool empty() const { return ( !head ); }
 
 
+    /**
+     * removes the element at index or throws an exception if the index is out of bounds
+     * @param index
+     */
+    void removeAt(size_t index){
+        if(index>=size()){
+            throw "Index out of bounds" ;
+        }
+        node* curr=head;
+
+        for(int j = 0; j<index;j++){
+            curr=curr->next;
+        }
+
+        curr->next->prev=curr->prev;
+
+        if(index==0){
+            head=curr->next;
+        }else{
+            curr->prev->next=curr->next;
+        }
+
+        length--;
+        delete curr;
+
+    }
+
+    /**
+     * removes the first element that matches o if it exists
+     * @param o
+     *
+     */
+    void remove(const T& o){
+
+        node* curr=head;
+
+        while((curr->elem!=o&&curr!=tail)){
+            curr=curr->next;
+        }
+        if(curr!=tail){
+            if(curr==head){
+                if(head->next!=tail){
+                    head=head->next;
+                }else{
+                    head= nullptr;
+                }
+            }else{
+                curr->prev->next=curr->next;
+            }
+            length--;
+            delete curr;
+
+        }
+
+    }
+
+    /**
+    * returns an ConstIterator pointing on the head of the list
+    * @return  ConstIterator pointing on the head
+    */
     ConstIterator begin()const{
         return ConstIterator(head);
     }
 
+    /**
+    * returns an Iterator pointing on the head of the list
+    * @return  Iterator pointing on the head
+    */
     Iterator begin(){
         return Iterator(head);
     }
 
 
+    /**
+    * return an ConstIterator pointing on the tail of the list
+    * @return  ConstIterator pointing on the tail
+    */
     ConstIterator end()const {
         if(empty())
             return begin();
@@ -240,34 +335,31 @@ public:
         return ConstIterator(tail);
     }
 
+    /**
+     * return an Iterator pointing on the tail of the list
+     * @return  Iterator pointing on the tail  
+     */
     Iterator end() {
         if(empty())
             return begin();
 
         return Iterator(tail);
     }
+
+
+
     /**
      * returns the size of the list
      * @return the size of the list
      */
-    int size(){
-        if(empty())
-            return 0;
+    size_t size()const{
 
-        node* curr= head;
-        int count= 0;
-
-        while(curr!=tail){
-            curr=curr->next;
-            count++;
-        }
-
-        return count;
+        return length;
     }
 
     /**
-     * inserts the element o at the begining of the list
-     * @param o the element to insert
+     * Method used to add an element at the start of the list
+     * @param o the object that we want to add
      */
     void insert(const T& o){
 
@@ -281,11 +373,14 @@ public:
             head->next->prev=head;
         }
 
+        length++;
     }
 
     /**
+
      * Method used to add an element at the end of the list
      * @param o the object that we want to add
+
      */
     void append(const T& o){
         if(empty()){
@@ -296,6 +391,8 @@ public:
             tail->prev=new node(o, tail->prev, tail);
             tail->prev->prev->next=tail->prev;
         }
+
+        length++;
     }
 
     /**
